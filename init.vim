@@ -308,7 +308,7 @@ end
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 	vim.lsp.diagnostic.on_publish_diagnostics, {
 		signs = true,
-		virtual_text = true,
+		virtual_text = false,
 		underline = false,
 		update_in_insert = false
 	}
@@ -317,7 +317,12 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require'cmp_nvim_lsp'.update_capabilities(capabilities)
 
-require'lspconfig'.clangd.setup{on_attach = on_attach, capabilities = capabilities}
+require'lspconfig'.ccls.setup{
+	on_attach = on_attach, capabilities = capabilities,
+	root_dir = require'lspconfig'.util.root_pattern('.ccls-root', '.ccls', '.git'),
+	flags = {debounce_text_changes = 500},
+	offset_encodig = 'utf-8'
+}
 EOF
 sign define LspDiagnosticsSignError text=>> texthl=LspDiagnosticsSignError linehl= numhl=
 sign define LspDiagnosticsSignWarning text=>> texthl=LspDiagnosticsSignWarning linehl= numhl=
