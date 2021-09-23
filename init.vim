@@ -130,9 +130,6 @@ nnoremap <leader>tl :tabnext<cr>
 " Miscellaneous
 vnoremap J :m '>+1<cr>gv
 vnoremap K :m '<-2<cr>gv
-
-nnoremap <c-m> o<esc>
-
 " }}}
 
 " ========================================
