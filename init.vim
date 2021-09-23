@@ -353,10 +353,14 @@ function! s:RunTermdebug(file)
 
 	let gdb_window = win_getid(bufwinnr('gdb'))
 	let program_window = win_getid(bufwinnr('gdb program'))
+
+	let combined_height = nvim_win_get_height(gdb_window) + nvim_win_get_height(program_window)
+	let resize_program_command = 'winnr("k") . ' . '"resize +' . (combined_height - 20) . '"'
+
 	call win_execute(program_window, 'wincmd J')
 	call win_execute(gdb_window, 'wincmd J')
 	call nvim_win_set_height(gdb_window, 10)
-	call win_execute(program_window, 'execute winnr("k") . "resize +10"')
+	call win_execute(program_window, 'execute ' . resize_program_command)
 
 	call win_gotoid(return_window)
 endfunction
