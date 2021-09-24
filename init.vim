@@ -225,6 +225,17 @@ nnoremap <leader>f :FZF<cr>
 " }}}
 
 " startify {{{
+function! ChangeDirectory(arg)
+	if type(a:arg)  == v:t_list
+		let directory = a:arg[0]
+	else
+		let directory = a:arg
+	endif
+
+	execute 'cd ' . directory
+	call fzf#run(fzf#wrap({'window': 'enew'}))
+endfunction
+
 let g:startify_lists = [
 		\ {'type': 'bookmarks', 'header': ['Bookmarks'], 'indices': ['c']},
 		\ {'type': 'sessions', 'header': ['Sessions']},
@@ -232,8 +243,8 @@ let g:startify_lists = [
 		\ ]
 let g:startify_bookmarks = ['~/.config/nvim/init.vim']
 let g:startify_commands = [
-			\['fzf', 'call fzf#run({"sink": "e", "source": "find . -path \"*/.*\" -prune -o -type d -print"})'],
-			\['nnn', 'call nnn#pick("dev", {"layout": "enew"})']]
+			\['fzf', 'call fzf#run({"sink": funcref("ChangeDirectory"), "source": "find . -path \"*/.*\" -prune -o -type d -print"})'],
+			\['nnn', 'call nnn#pick(".", {"layout": "enew", "edit": funcref("ChangeDirectory")})']]
 
 if !exists('g:start_from_keybind')
 	let g:startify_disable_at_vimenter = 1
