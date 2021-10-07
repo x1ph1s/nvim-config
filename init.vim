@@ -8,6 +8,7 @@ set shell=$SHELL
 set title
 set titlestring=nvim
 set termguicolors
+set guifont=Fira\ Mono:h12
 " User Interface Options
 set number relativenumber
 set nocursorline
