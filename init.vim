@@ -15,7 +15,7 @@ set nocursorline
 set laststatus=2
 set showtabline=1
 set noshowmode
-set mouse=nvcr
+set mouse=nvc
 set noerrorbells
 set belloff=all
 set nowrap
