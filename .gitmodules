@@ -34,3 +34,12 @@
 [submodule "bundle/vim-startify"]
 	path = bundle/vim-startify
 	url = https://github.com/mhinz/vim-startify
+[submodule "bundle/cmp-path"]
+	path = bundle/cmp-path
+	url = https://github.com/hrsh7th/cmp-path
+[submodule "bundle/nvim-snippy"]
+	path = bundle/nvim-snippy
+	url = https://github.com/dcampos/nvim-snippy
+[submodule "bundle/cmp-snippy"]
+	path = bundle/cmp-snippy
+	url = https://github.com/dcampos/cmp-snippy

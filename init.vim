@@ -33,6 +33,7 @@ let &shiftwidth=&tabstop
 " Search Options
 set nohlsearch
 set incsearch
+set ignorecase
 set smartcase
 " Files
 filetype plugin on
@@ -257,7 +258,7 @@ lua << EOF
 require'lsp_signature'.setup({
 	bind = true,
 	doc_lines = 0,
-	fix_pos = true,
+	fix_pos = false,
 	auto_close_after = nil,
 	floating_window = true,
 	floating_window_above_cur_line = true,
@@ -265,6 +266,8 @@ require'lsp_signature'.setup({
 	handler_opts = {
 		border = "single"
 	},
+	shadow_blend = 0,
+	toggle_key = '<c-i>'
 })
 EOF
 " }}}
@@ -273,51 +276,57 @@ EOF
 set completeopt=menuone,noselect
 lua << EOF
 local cmp = require'cmp'
+local snippy = require'snippy'
 cmp.setup({
-	mapping = {
-		['<c-p'] = cmp.mapping.select_prev_item(),
-		['<c-n'] = cmp.mapping.select_next_item(),
-		['<c-e'] = cmp.mapping.close(),
-		['<tab>'] = function(fallback)
-			if vim.fn.pumvisible() == 1 then
-				vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<c-n>', true, true, true), 'n')
-			else
-				fallback()
-			end
-		end,
-		['<s-tab>'] = function(fallback)
-			if vim.fn.pumvisible() == 1 then
-				vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<c-p>', true, true, true), 'n')
-			else
-				fallback()
-			end
-		end,
+	snippet = {
+		expand = function(args)
+			snippy.expand_snippet(args.body)
+		end
 	},
+	mapping = {
+		['<c-e>'] = cmp.mapping.close(),
+		['<cr>'] = cmp.mapping.confirm {
+			behavior = cmp.ConfirmBehavior.Replace,
+			select = true
+		},
+		['<tab>'] = function(fallback)
+			if snippy.can_expand_or_advance() then
+				snippy.expand_or_advance()
+			elseif cmp.visible() then
+				cmp.select_next_item()
+			else
+				fallback()
+			end
+		end
+		},
 	sources = {
-		{ name = 'nvim_lsp' }
+		{ name = 'nvim_lsp' },
+		{ name = 'path' },
+		{ name = 'snippy' }
 	}
 })
 EOF
 " }}}
 
-" lspconfig {{{
+" nvim-lspconfig {{{
 lua << EOF
 local on_attach = function(client)
 	local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
 
 	local opts = {noremap=true, silent=true}
 
-	buf_set_keymap('n', '<leader>gd', '<cmd>lua vim.lsp.buf.declaration()<cr>', opts)
-	buf_set_keymap('n', '<leader>gD', '<cmd>lua vim.lsp.buf.definition()<cr>', opts)
-	buf_set_keymap('n', '<leader>gi', '<cmd>lua vim.lsp.buf.implementation()<cr>', opts)
+	buf_set_keymap('n', '<leader>gd', '<cmd>lua vim.lsp.buf.definition()<cr>', opts)
+	buf_set_keymap('n', '<leader>gD', '<cmd>lua vim.lsp.buf.declaration()<cr>', opts)
 	buf_set_keymap('n', '<leader>gr', '<cmd>lua vim.lsp.buf.references()<cr>', opts)
 	buf_set_keymap('n', '<leader>sf', '<cmd>lua vim.lsp.buf.formatting()<cr>', opts)
+	buf_set_keymap('n', '<leader>sd', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics({focusable = false})<cr>', opts)
+	buf_set_keymap('n', '<leader>sD', '<cmd>lua vim.lsp.diagnostic.set_loclist()<cr>', opts)
 end
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 	vim.lsp.diagnostic.on_publish_diagnostics, {
 		signs = true,
-		virtual_text = false,
+		virtual_text = true,
 		underline = false,
 		update_in_insert = false
 	}
@@ -327,7 +336,12 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require'cmp_nvim_lsp'.update_capabilities(capabilities)
 
 require'lspconfig'.ccls.setup{
-	on_attach = on_attach, capabilities = capabilities,
+	on_attach = on_attach, capabilities = capabilities, handlers = handlers,
+	init_options = {
+		cache = {
+			directory = ".ccls-cache";
+		}
+	},
 	root_dir = require'lspconfig'.util.root_pattern('.ccls-root', '.ccls', '.git'),
 	flags = {debounce_text_changes = 500},
 	offset_encodig = 'utf-8'
@@ -337,8 +351,6 @@ sign define LspDiagnosticsSignError text=>> texthl=LspDiagnosticsSignError lineh
 sign define LspDiagnosticsSignWarning text=>> texthl=LspDiagnosticsSignWarning linehl= numhl=
 sign define LspDiagnosticsSignInformation text=>> texthl=LspDiagnosticsSignInformation linehl= numhl=
 sign define LspDiagnosticsSignHint text=>> texthl=LspDiagnosticsSignHint linehl= numhl=
-
-highlight link LspDiagnosticsSignError Error
 " }}}
 
 " vim-modern-cpp {{{
