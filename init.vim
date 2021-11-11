@@ -139,8 +139,6 @@ vnoremap K :m '<-2<cr>gv
 " ========================================
 " cpp
 function! GoCpp()
-	iabbrev <buffer> class class{<cr>};<up><right><right><right>
-	iabbrev <buffer> struct struct{<cr>};<up><right><right><right><right>
 	inoremap <c-j> {<cr>}<esc>O
 
 	setlocal foldmethod=marker
@@ -267,7 +265,7 @@ require'lsp_signature'.setup({
 		border = "single"
 	},
 	shadow_blend = 0,
-	toggle_key = '<c-i>'
+	toggle_key = '<c-t>'
 })
 EOF
 " }}}
@@ -284,26 +282,33 @@ cmp.setup({
 		end
 	},
 	mapping = {
+		['<c-n>'] = cmp.mapping.select_next_item(),
+		['<c-p>'] = cmp.mapping.select_prev_item(),
 		['<c-e>'] = cmp.mapping.close(),
 		['<cr>'] = cmp.mapping.confirm {
 			behavior = cmp.ConfirmBehavior.Replace,
 			select = true
-		},
-		['<tab>'] = function(fallback)
-			if snippy.can_expand_or_advance() then
-				snippy.expand_or_advance()
-			elseif cmp.visible() then
-				cmp.select_next_item()
-			else
-				fallback()
-			end
-		end
-		},
+		}
+	},
 	sources = {
 		{ name = 'nvim_lsp' },
 		{ name = 'path' },
 		{ name = 'snippy' }
 	}
+})
+EOF
+" }}}
+
+" nvim-snippy {{{
+lua << EOF
+local snippy = require("snippy")
+snippy.setup({
+    mappings = {
+        nis = {
+            ["<Tab>"] = "expand_or_advance",
+            ["<S-Tab>"] = "previous",
+        }
+    }
 })
 EOF
 " }}}

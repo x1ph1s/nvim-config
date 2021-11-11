@@ -1,0 +1,27 @@
+snippet cout
+	std::cout << ${1} << std::endl;
+#for
+snippet for
+	for(uint32_t ${1:i} = 0; $1 < ${2:count}; $1++) {
+		${4}
+	}
+snippet forr
+	for(${1:uint32_t} ${2:i} = ${3:0}; $2 ${4:< count}; $2${5:++}) {
+		${6}
+	}
+snippet fore
+	for(${1:auto&} ${2:i} : ${3:container}) {
+		${4}
+	}
+snippet cl
+	class ${1:`expand('%:t:r')`} {
+		${2}
+	};
+snippet st
+	struct ${1:`expand('%:t:r')`} {
+		${2}
+	};
+snippet en
+	enum ${1:`expand('%:t:r')`} : ${2:uint32_t} {
+		${3}
+	};
