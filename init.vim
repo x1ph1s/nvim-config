@@ -155,6 +155,7 @@ augroup filetype
 	autocmd FileType vim setlocal foldmethod=marker
 	autocmd FileType qf nnoremap <buffer> <cr> :.cc<cr>
 	autocmd FileType text setlocal textwidth=70
+	autocmd FileType tex setlocal textwidth=70
 	autocmd FileType xml setlocal foldmethod=indent
 augroup END
 
@@ -399,7 +400,7 @@ nnoremap <leader>dq :Gdb<cr>:startinsert<cr>quit<cr>
 " }}}
 " }}}
 
-let g:helper_files = ['plugin-managment.vim', 'quickfix.vim', 'terminal.vim', 'window-changing.vim']
+let g:helper_files = ['plugin-managment.vim', 'quickfix.vim', 'terminal.vim', 'window-changing.vim', 'latex-integration.vim']
 
 let g:helper_root = expand('<sfile>:p:h') . '/helper/'
 
