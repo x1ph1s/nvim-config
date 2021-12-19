@@ -364,10 +364,18 @@ let g:cpp_attributes_highlight = 1
 let g:cpp_simple_highlight = 1
 " }}}
 
-" vim-dispatch {{{
-nnoremap <f8> :Make<cr>
+" asyncrun.vim {{{
+let asyncrun_open = 8
+nnoremap <f8> :AsyncRun -post=call\ AsyncRunPost() make<cr>
 nnoremap <f6> :! ./.vimrun<cr>
-let g:dispatch_no_maps = 1
+
+function! AsyncRunPost()
+	copen
+	wincmd p
+	if len(filter(getqflist(), {k,v -> v.valid})) == 0
+		cclose
+	endif
+endfunction
 " }}}
 
 " termdebug {{{
