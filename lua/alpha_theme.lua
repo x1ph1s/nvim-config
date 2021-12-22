@@ -11,7 +11,7 @@ local function button(sc, txt, vim_cmd)
 	}
 end
 local function file_button(sc, file_name)
-	return button(sc, file_name, "edit " .. file_name)
+	return button(sc, file_name, "execute 'cd ' . fnamemodify('" .. file_name .. "',':p:h') | edit " .. file_name)
 end
 local function session_button(sc, session_file)
 	return button(sc, session_file, "source " .. session_file)
