@@ -225,7 +225,7 @@ let g:fzf_layout = { 'window': '10new' }
 nnoremap <leader>f :FZF<cr>
 " }}}
 
-" startify {{{
+" alpha-nvim {{{
 function! ChangeDirectory(arg)
 	if type(a:arg)  == v:t_list
 		let directory = a:arg[0]
@@ -236,20 +236,29 @@ function! ChangeDirectory(arg)
 	execute 'cd ' . directory
 	call fzf#run(fzf#wrap({'window': 'enew'}))
 endfunction
+function! FzfChangeDirectory()
+	call fzf#run({"sink": funcref("ChangeDirectory"), "source": "find . -path \"*/.*\" -prune -o -type d -print"})
+endfunction
 
-let g:startify_lists = [
-		\ {'type': 'bookmarks', 'header': ['Bookmarks'], 'indices': ['c']},
-		\ {'type': 'sessions', 'header': ['Sessions']},
-		\ {'type': 'commands', 'header': ['Commands'], 'indices': ['f', 'F']},
-		\ ]
-let g:startify_bookmarks = ['~/.config/nvim/init.vim']
-let g:startify_commands = [
-			\['fzf', 'call fzf#run({"sink": funcref("ChangeDirectory"), "source": "find . -path \"*/.*\" -prune -o -type d -print"})'],
-			\['nnn', 'call nnn#pick(".", {"layout": "enew", "edit": funcref("ChangeDirectory")})']]
+lua << EOF
+local session_dir = "~/.vim/session"
+vim.cmd("command -nargs=1 Mksession mksession " .. session_dir .. "/<args>")
+vim.cmd("command -nargs=1 Rmsession call delete(expand('" .. session_dir .. "/<args>'))")
 
-if !exists('g:start_from_keybind')
-	let g:startify_disable_at_vimenter = 1
-endif
+if vim.fn.exists("g:start_from_keybind") == 1 then
+	local header_text = {
+		[[                                  __                ]],
+		[[     ___     ___    ___   __  __ /\_\    ___ ___    ]],
+		[[    / _ `\  / __`\ / __`\/\ \/\ \\/\ \  / __` __`\  ]],
+		[[   /\ \/\ \/\  __//\ \_\ \ \ \_/ |\ \ \/\ \/\ \/\ \ ]],
+		[[   \ \_\ \_\ \____\ \____/\ \___/  \ \_\ \_\ \_\ \_\]],
+		[[    \/_/\/_/\/____/\/___/  \/__/    \/_/\/_/\/_/\/_/]],
+	}
+	local bookmark_list = {{"c", "~/.config/nvim/init.vim"}}
+	local command_list = {{"e", "<empty buffer>", "enew"}, {"f", "<fzf>", "call FzfChangeDir()"}, {"q", "<quit>", "quit"}}
+	require'alpha'.setup(require'alpha_theme'.opts(header_text, bookmark_list, command_list, session_dir))
+end
+EOF
 " }}}
 
 " lsp_signature {{{
