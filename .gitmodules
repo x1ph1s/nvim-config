@@ -43,3 +43,6 @@
 [submodule "bundle/alpha-nvim"]
 	path = bundle/alpha-nvim
 	url = https://github.com/goolord/alpha-nvim
+[submodule "bundle/nvim-comment"]
+	path = bundle/nvim-comment
+	url = https://github.com/terrortylor/nvim-comment

@@ -137,28 +137,12 @@ vnoremap K :m '<-2<cr>gv
 " ========================================
 " File specific configuration {{{
 " ========================================
-" cpp
-function! GoCpp()
-	inoremap <c-j> {<cr>}<esc>O
-
-	setlocal foldmethod=marker
-	setlocal foldmarker=#pragma\ region,#pragma\ endregion
-endfunction
-
-augroup filetype_cpp
-	autocmd!
-	autocmd FileType cpp call GoCpp()
-augroup END
-
-" rest
 augroup filetype
 	autocmd FileType vim setlocal foldmethod=marker
 	autocmd FileType qf nnoremap <buffer> <cr> :.cc<cr>
 	autocmd FileType text setlocal textwidth=70
 	autocmd FileType tex setlocal textwidth=70
-	autocmd FileType xml setlocal foldmethod=indent
 augroup END
-
 " }}}
 
 " ========================================
@@ -366,6 +350,15 @@ sign define LspDiagnosticsSignError text=>> texthl=LspDiagnosticsSignError lineh
 sign define LspDiagnosticsSignWarning text=>> texthl=LspDiagnosticsSignWarning linehl= numhl=
 sign define LspDiagnosticsSignInformation text=>> texthl=LspDiagnosticsSignInformation linehl= numhl=
 sign define LspDiagnosticsSignHint text=>> texthl=LspDiagnosticsSignHint linehl= numhl=
+" }}}
+
+" nvim-comment {{{
+augroup filetype_cpp
+	autocmd Filetype cpp,c let &commentstring = '// %s'
+augroup END
+lua << EOF
+require'nvim_comment'.setup({marker_padding = true, comment_empty = false})
+EOF
 " }}}
 
 " vim-modern-cpp {{{
