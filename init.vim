@@ -226,8 +226,8 @@ endfunction
 
 lua << EOF
 local session_dir = "~/.vim/session"
-vim.cmd("command -nargs=1 Mksession mksession " .. session_dir .. "/<args>")
-vim.cmd("command -nargs=1 Rmsession call delete(expand('" .. session_dir .. "/<args>'))")
+vim.cmd("command! -nargs=1 Mksession mksession " .. session_dir .. "/<args>")
+vim.cmd("command! -nargs=1 Rmsession call delete(expand('" .. session_dir .. "/<args>'))")
 
 if vim.fn.exists("g:start_from_keybind") == 1 then
 	local header_text = {
