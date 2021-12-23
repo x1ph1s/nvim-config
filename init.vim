@@ -361,6 +361,11 @@ require'nvim_comment'.setup({marker_padding = true, comment_empty = false})
 EOF
 " }}}
 
+" mini.jump {{{
+lua require'mini_jump'.setup({mappings = {repeat_jump = ''}, highlight_delay = 0})
+highlight link MiniJump Search
+" }}}
+
 " vim-modern-cpp {{{
 let g:cpp_attributes_highlight = 1
 let g:cpp_simple_highlight = 1
