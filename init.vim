@@ -157,35 +157,62 @@ let g:gruvbox_contrast_dark = 'soft'
 colorscheme gruvbox
 " }}}
 
-" lightline {{{
-let lightline = {
-\	'colorscheme': 'gruvbox',
-\	'component': {
-\		'filetype': '%{&ft!=#""?&ft:"-"}',
-\		'lineinfo': '%1l/%-3L',
-\		'relativepath': '%{empty(expand("%")) ? "" : "./" . expand("%")}',
-\		'fileinfo': '%{&readonly ? " " : ""}' . '%{expand("%:t")}' . '%{&modified ? "[+]" : ""}'
-\	},
-\	'active': {
-\	 	'left': [
-\			['mode', 'paste'],
-\			['fileinfo']
-\		],
-\		'right': [
-\			['lineinfo'],
-\			['percent'],
-\			['relativepath', 'filetype']
-\		]
-\	},
-\	'inactive': {
-\		'left': [[ 'relativepath' ]],
-\		'right': [ ]
-\	},
-\	'tabline': {
-\		'left': [[ 'tabs' ]],
-\		'right': []
-\	}
-\}
+" feline {{{
+lua << EOF
+local theme = require'feline_setup'
+local colors = {
+  bg = '#282828',
+  bg1  = '#3c3836',
+  bg2  = '#504945',
+  bg3  = '#7c6f64',
+  red = '#cc241d',
+  green = '#98971a',
+  yellow = '#d79921',
+  blue = '#83a598',
+  purple = '#d3869b',
+  aqua = '#689d6a',
+  grey = '#928374',
+  orange = '#d65d0e',
+  fg = '#d5c4a1'
+}
+local hl1 = {
+	fg = 'fg',
+	bg = 'bg2'
+}
+local hl2 = {
+	fg = 'fg',
+	bg = 'bg1'
+}
+local hl3 = {
+	fg = 'fg',
+	bg = 'bg3'
+}
+local components = {
+	active = {
+		{
+			theme.mode(),
+			theme.space(hl1),
+			theme.file_name(true, hl1),
+			theme.space(hl1),
+			theme.vertical_bar(hl1),
+			theme.space(hl1),
+			theme.file_type(hl1),
+			theme.space(hl1),
+			theme.highlight(hl2)
+		},
+		{
+			theme.space(hl1),
+			theme.file_name(false, hl1),
+			theme.space(hl1),
+			theme.space(hl3),
+			theme.position_info(hl3),
+			theme.space(hl3)
+		}
+	},
+	inactive = {{theme.file_name(true, hl1)}}
+}
+require'feline'.setup({components = components, theme = colors})
+EOF
 " }}}
 
 " nnn.vim {{{

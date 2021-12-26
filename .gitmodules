@@ -10,9 +10,6 @@
 [submodule "bundle/gruvbox"]
 	path = bundle/gruvbox
 	url = https://github.com/morhetz/gruvbox
-[submodule "bundle/lightline.vim"]
-	path = bundle/lightline.vim
-	url = https://github.com/itchyny/lightline.vim
 [submodule "bundle/lsp_signature.nvim"]
 	path = bundle/lsp_signature.nvim
 	url = https://github.com/ray-x/lsp_signature.nvim
@@ -46,3 +43,6 @@
 [submodule "bundle/nvim-comment"]
 	path = bundle/nvim-comment
 	url = https://github.com/terrortylor/nvim-comment
+[submodule "bundle/feline.nvim"]
+	path = bundle/feline.nvim
+	url = https://github.com/feline-nvim/feline.nvim
