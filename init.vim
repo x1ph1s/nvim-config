@@ -266,7 +266,7 @@ if vim.fn.exists("g:start_from_keybind") == 1 then
 		[[    \/_/\/_/\/____/\/___/  \/__/    \/_/\/_/\/_/\/_/]],
 	}
 	local bookmark_list = {{"c", "~/.config/nvim/init.vim"}}
-	local command_list = {{"e", "<empty buffer>", "enew"}, {"f", "<fzf>", "call FzfChangeDir()"}, {"q", "<quit>", "quit"}}
+	local command_list = {{"e", "<empty buffer>", "enew"}, {"f", "<fzf>", "call FzfChangeDirectory()"}, {"q", "<quit>", "quit"}}
 	require'alpha'.setup(require'alpha_theme'.opts(header_text, bookmark_list, command_list, session_dir))
 end
 EOF
@@ -390,7 +390,7 @@ EOF
 
 " mini.jump {{{
 lua require'mini_jump'.setup({mappings = {repeat_jump = ''}, highlight_delay = 0})
-highlight link MiniJump Search
+highlight link MiniJump VisualNOS
 " }}}
 
 " vim-modern-cpp {{{
