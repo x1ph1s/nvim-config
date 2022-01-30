@@ -389,8 +389,7 @@ EOF
 " }}}
 
 " mini.jump {{{
-lua require'mini_jump'.setup({mappings = {repeat_jump = ''}, highlight_delay = 0})
-highlight link MiniJump VisualNOS
+lua require'mini_jump'.setup({mappings = {}, highlight_delay = 0})
 " }}}
 
 " vim-modern-cpp {{{

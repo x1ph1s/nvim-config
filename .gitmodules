@@ -46,3 +46,6 @@
 [submodule "bundle/feline.nvim"]
 	path = bundle/feline.nvim
 	url = https://github.com/feline-nvim/feline.nvim
+[submodule "bundle/--force"]
+	path = bundle/--force
+	url = https://github.com/rebelot/heirline.nvim
