@@ -215,6 +215,99 @@ require'feline'.setup({components = components, theme = colors})
 EOF
 " }}}
 
+" heirline {{{
+" lua << EOF
+" local condition = require'heirline.conditions'
+" local utils = require'heirline.utils'
+" 
+" local colors = {
+" 	bg = '#282828',
+" 	bg1  = '#3c3836',
+" 	bg2  = '#504945',
+" 	bg3  = '#7c6f64',
+" 	red = '#cc241d',
+" 	green = '#98971a',
+" 	yellow = '#d79921',
+" 	blue = '#83a598',
+" 	purple = '#d3869b',
+" 	aqua = '#689d6a',
+" 	grey = '#928374',
+" 	orange = '#d65d0e',
+" 	fg = '#d5c4a1'
+" }
+" 
+" local mode = {
+"     init = function(self)
+"         self.mode = vim.fn.mode()
+"     end,
+"     static = {
+"         mode_names = {
+" 				n = "NORMAL",
+" 				v = "VISUAL",
+" 				V = "V-LINE",
+" 				[''] = "V-BLOCK",
+" 				s = "SELECT",
+" 				S = "SELECT",
+" 				R = "REPLACE",
+" 				i = "INSERT",
+" 				c = "COMMAND",
+" 				r = "CONFIRM",
+" 				['!'] = "EXECUTE",
+" 				t = "TERMINAL"
+"         },
+"         mode_colors = {
+" 			n = colors.green,
+" 			v = colors.orange,
+" 			V = colors.orange,
+" 			[''] = colors.orange,
+" 			s = colors.orange,
+" 			S = colors.orange,
+" 			R = colors.aqua,
+" 			i = colors.blue,
+" 			c = colors.grey,
+" 			r = colors.grey,
+" 			['!'] = colors.grey,
+" 			t = colors.grey
+"         }
+"     },
+"     provider = function(self)
+"         return ' ' .. self.mode_names[self.mode] .. ' '
+"     end,
+"     hl = function(self)
+"         local mode = self.mode:sub(1, 1)
+"         return {fg = colors.bg, bg = self.mode_colors[mode], style = "bold"}
+"     end
+" }
+" local file_name = {
+" 	provider = function(self)
+" 		local filename = vim.fn.fnamemodify(self.filename, ":t");
+" 		if filename == "" then filename = "-" end
+" 		local readonly = (not vim.bo.modifiable) or vim.bo.readonly
+" 		local modified = vim.o.modified
+" 		return (readonly and "🔒" or "") .. filename .. (modified and "[+]" or "")
+" 	end,
+" }
+" local file_type = {
+" 	provider = function()
+" 		local ft = vim.o.filetype if ft == "" then ft = "-" end
+" 		return ft
+" 	end
+" }
+" local file_block = {
+" 	init = function(self)
+" 		self.filename = vim.api.nvim_buf_get_name(0)
+" 	end,
+" 	file_name,
+" 	file_type
+" }
+" local statusline = {
+" 	mode,
+" 	file_block
+" }
+" require'heirline'.setup(statusline)
+" EOF
+" }}}
+
 " nnn.vim {{{
 let g:nnn#set_default_mappings = 0
 let g:nnn#replace_netrw = 1
@@ -438,6 +531,7 @@ nnoremap <leader>dp :Program<cr>
 nnoremap <leader>ds :Source<cr>
 nnoremap <leader>dd :call <SID>RunTermdebug('.vimrun')<cr>
 nnoremap <leader>dq :Gdb<cr>:startinsert<cr>quit<cr>
+nnoremap <leader>dr :call <SID>RunTermdebug('.vimrun')<cr>:Break<cr>:Run<cr>
 " }}}
 " }}}
 

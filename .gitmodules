@@ -49,3 +49,6 @@
 [submodule "bundle/--force"]
 	path = bundle/--force
 	url = https://github.com/rebelot/heirline.nvim
+[submodule "bundle/heirline.nvim"]
+	path = bundle/heirline.nvim
+	url = https://github.com/rebelot/heirline.nvim
